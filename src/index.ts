@@ -4,12 +4,12 @@ export interface BaseHooks {
 }
 
 async function initPlugins(plugins: any[]) {
-  for (const plugin of plugins) {
+  for (const plugin of Object.values(plugins)) {
     if (plugin.init) {
       await plugin.init(plugins);
     }
   }
-  for (const plugin of plugins) {
+  for (const plugin of Object.values(plugins)) {
     if (plugin.postInit) {
       await plugin.postInit();
     }

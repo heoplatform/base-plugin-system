@@ -95,15 +95,15 @@ await initPlugins(plugins);
 ### Phase 1: `init`
 - All `init` methods are called sequentially
 - Each plugin receives the complete plugins array
-- Plugins can access and configure other plugins
+- Setup only; no side-effects allowed
 - Ideal for:
   - Setting up core functionality
   - Establishing dependencies
-  - Cross-plugin configuration
 
 ### Phase 2: `postInit`
 - Called after all `init` methods have completed
 - No parameters passed (plugins should have stored necessary references during `init`)
+- Side-effects allowed
 - Ideal for:
   - Final setup steps
   - Starting services
@@ -111,33 +111,17 @@ await initPlugins(plugins);
 
 ## Best Practices
 
+When writing plugins with their own lifecycle, start it during postInit. Here's an example:
+
+Base plugin system
+├── `init` on the express plugin
+└── `postInit` on the express plugin
+    ├── `initExpress` on the vite plugin
+    └── `postInitExpress` on the vite plugin
+        ├── `initVite` on the solid example plugin
+        └── `postInitVite` on the solid example plugin
+
 1. **Use `init` for setup**: Core plugin initialization and dependency resolution
 2. **Use `postInit` for finalization**: Operations that require all plugins to be ready
 3. **Store dependencies**: Save references to other plugins during the `init` phase
 4. **Handle errors gracefully**: Use try-catch blocks in your plugin methods
-5. **Keep plugins independent**: Minimize tight coupling between plugins
-
-## Error Handling
-
-The plugin manager will propagate any errors thrown during initialization. It's recommended to handle errors within your plugins:
-
-```typescript
-const robustPlugin: BaseHooks = {
-  async init(plugins) {
-    try {
-      await this.riskyInitialization();
-    } catch (error) {
-      console.error('Plugin initialization failed:', error);
-      // Handle gracefully or re-throw if critical
-    }
-  }
-};
-```
-
-## License
-
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. 

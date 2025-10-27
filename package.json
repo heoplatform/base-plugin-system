@@ -1,10 +1,10 @@
 {
-  "name": "@yetifrozty/base-plugin-system",
+  "name": "@heoplatform/base-plugin-system",
   "version": "1.0.0",
   "description": "The base plugin system",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yetifrozty/base-plugin-system.git"
+    "url": "https://github.com/heoplatform/base-plugin-system.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
